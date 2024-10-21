@@ -11,6 +11,50 @@ class Flight:
         self.price = price
         self.id = None
 
+    @property
+    def airline(self):
+        return self._airline
+    
+    @airline.setter
+    def airline(self, value):
+        if type(value) == str:
+            self._airline = value
+        else:
+            raise TypeError("Airline must be a string text value!")
+        
+    @property
+    def origin(self):
+        return self._origin
+    
+    @origin.setter
+    def origin(self, value):
+        if type(value) == str:
+            self._origin = value
+        else:
+            raise TypeError("Origin must be a string text value!")
+        
+    @property
+    def destination(self):
+        return self._destination
+
+    @destination.setter
+    def destination(self, value):
+        if type(value) == str:
+            self._destination = value
+        else:
+            raise TypeError("Destination must be a string text value!")
+        
+    @property
+    def price(self):
+        return self._price
+    
+    @price.setter
+    def price(self, value):
+        if type(value) in [int, float]:
+            self._price = value
+        else:
+            raise TypeError("Price must be either a float or integer value!")
+
     @classmethod
     def create_table(cls):
         sql = """
