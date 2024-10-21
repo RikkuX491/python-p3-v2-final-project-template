@@ -70,3 +70,16 @@ class Flight:
         """
 
         CURSOR.execute(sql)
+
+    @classmethod
+    def instance_from_db(cls, row):
+        flight = Flight(row[1], row[2], row[3], row[4])
+        flight.id = row[0]
+        return flight
+
+    # @classmethod
+    # def find_by_id(cls, id):
+    #     pass
+
+    def __repr__(self):
+        return f"<Flight # {self.id}: Airline = {self.airline}, Origin = {self.origin}, Destination = {self.destination}, Price = {self.price}>"
