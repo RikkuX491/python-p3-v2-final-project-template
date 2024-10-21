@@ -13,6 +13,7 @@ def seed_database():
 
     Flight.create("Emirates", "New Jersey, USA", "Athens, Greece", 1234.56)
     Flight.create("Delta", "New York, NY", "Honolulu, Hawaii", 765.43)
+    Flight.create("American Airlines", "New York, USA", "Bermuda", 435.25)
 
     Booking.create(3, 1)
     Booking.create(4, 2)
