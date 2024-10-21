@@ -73,13 +73,44 @@ class Flight:
 
     @classmethod
     def instance_from_db(cls, row):
-        flight = Flight(row[1], row[2], row[3], row[4])
+        flight = cls(row[1], row[2], row[3], row[4])
         flight.id = row[0]
         return flight
 
-    # @classmethod
-    # def find_by_id(cls, id):
-    #     pass
+    @classmethod
+    def find_by_id(cls, id):
+        sql = """
+            SELECT * FROM flights
+            WHERE id = ?
+        """
+
+        row = CURSOR.execute(sql, (id,)).fetchone()
+
+        if row:
+            return cls.instance_from_db(row)
+        else:
+            return None
+        
+    @classmethod
+    def get_all(cls):
+        sql = """
+            SELECT * FROM flights
+        """
+
+        rows = CURSOR.execute(sql).fetchall()
+        cls.all = [cls.instance_from_db(row) for row in rows]
+        return cls.all
+
+    def bookings(self):
+        from models.booking import Booking
+
+        sql = """
+            SELECT * FROM bookings
+            WHERE flight_id = ?
+        """
+
+        rows = CURSOR.execute(sql, (self.id,)).fetchall()
+        return [Booking.instance_from_db(row) for row in rows]
 
     def __repr__(self):
         return f"<Flight # {self.id}: Airline = {self.airline}, Origin = {self.origin}, Destination = {self.destination}, Price = {self.price}>"
