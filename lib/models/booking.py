@@ -50,7 +50,12 @@ class Booking:
     @classmethod
     def create_table(cls):
         sql = """
-            CREATE TABLE IF NOT EXISTS bookings (id INTEGER PRIMARY KEY, number_of_tickets INTEGER, total_price REAL, flight_id INTEGER)
+            CREATE TABLE IF NOT EXISTS bookings (
+                id INTEGER PRIMARY KEY,
+                number_of_tickets INTEGER,
+                total_price REAL,
+                flight_id INTEGER
+            )
         """
 
         CURSOR.execute(sql)
@@ -92,6 +97,36 @@ class Booking:
         rows = CURSOR.execute(sql).fetchall()
         cls.all = [cls.instance_from_db(row) for row in rows]
         return cls.all
+    
+    def save(self):
+        sql = """
+            INSERT INTO bookings (number_of_tickets, total_price, flight_id)
+            VALUES (?, ?, ?)
+        """
+
+        CURSOR.execute(sql, (self.number_of_tickets, self.total_price, self.flight_id))
+        CONN.commit()
+
+        self.id = CURSOR.lastrowid
+
+        Booking.all.append(self)
+
+    @classmethod
+    def create(cls, number_of_tickets, flight_id):
+        booking = cls(number_of_tickets, flight_id)
+        booking.save()
+        return booking
+    
+    def delete(self):
+        sql = """
+            DELETE FROM bookings
+            WHERE id = ?
+        """
+
+        CURSOR.execute(sql, (self.id,))
+        CONN.commit()
+
+        Booking.all = [booking for booking in Booking.all if booking.id != self.id]
 
     def flight(self):
         from models.flight import Flight
