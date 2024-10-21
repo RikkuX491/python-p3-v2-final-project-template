@@ -3,6 +3,7 @@
 
 from models.__init__ import CONN, CURSOR
 from models.flight import Flight
+from models.booking import Booking
 
 import ipdb
 

@@ -9,6 +9,7 @@ class Flight:
         self.origin = origin
         self.destination = destination
         self.price = price
+        self.id = None
 
     @classmethod
     def create_table(cls):
